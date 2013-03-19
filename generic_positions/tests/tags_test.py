@@ -16,8 +16,8 @@ class PositionResultListTestCase(TestCase):
 
     def setUp(self):
         self.first_model = DummyModelFactory()
-        DummyModelFactory(name='Foobar2')
-        DummyModelFactory(name='Foobar3')
+        DummyModelFactory()
+        DummyModelFactory()
 
     def test_render_tag(self):
         request = RequestFactory().get('/')

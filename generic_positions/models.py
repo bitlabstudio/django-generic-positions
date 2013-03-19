@@ -19,7 +19,10 @@ class ObjectPosition(models.Model):
     content_object = generic.GenericForeignKey()
 
     # Other fields
-    position = models.PositiveIntegerField(verbose_name=_('Position'))
+    position = models.PositiveIntegerField(
+        verbose_name=_('Position'),
+        null=True, blank=True,
+    )
 
     class Meta:
         ordering = ('position', )

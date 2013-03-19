@@ -2,7 +2,6 @@
 from django.test import TestCase
 
 from ..models import ObjectPosition
-from .factories import ObjectPositionFactory
 
 
 class ObjectPositionTestCase(TestCase):
@@ -13,7 +12,3 @@ class ObjectPositionTestCase(TestCase):
         """Test instatiation of the ``ObjectPosition`` model."""
         object_position = ObjectPosition()
         self.assertTrue(object_position)
-
-        # Test factory
-        object_position = ObjectPositionFactory()
-        self.assertEqual(object_position.position, 5)

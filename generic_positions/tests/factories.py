@@ -16,5 +16,4 @@ class ObjectPositionFactory(factory.Factory):
     """Factory for the ``ObjectPosition`` model."""
     FACTORY_FOR = ObjectPosition
 
-    position = 5
     content_object = factory.SubFactory(DummyModelFactory)

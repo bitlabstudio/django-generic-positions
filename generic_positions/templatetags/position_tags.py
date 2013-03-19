@@ -42,8 +42,7 @@ def position_result_list(cl):
             object_position = ObjectPosition.objects.get(
                 content_type__pk=c_type.id, object_id=obj.id)
         except ObjectPosition.DoesNotExist:
-            object_position = ObjectPosition.objects.create(
-                content_object=obj, position=x)
+            object_position = ObjectPosition.objects.create(content_object=obj)
         # Add the <td>
         html = ('<td><input class="vTextField" id="id_position-{0}"'
                 ' maxlength="256" name="position-{0}" type="position"'

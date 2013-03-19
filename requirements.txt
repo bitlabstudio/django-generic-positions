@@ -1,0 +1,19 @@
+# Install these requirements if you wish to contribute to this project.
+
+# ===========================================================================
+# Packages essential to this app. Needed by anyone who wants to use this app.
+# ===========================================================================
+Django==1.5
+django-libs==1.3
+South
+
+# ==============================================================
+# Packages needed for running the tests. Needed by contributors.
+# ==============================================================
+factory_boy
+flake8
+nose
+django-nose
+coverage
+django-coverage
+ipdb

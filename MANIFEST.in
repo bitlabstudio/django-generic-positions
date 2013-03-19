@@ -1,0 +1,8 @@
+include AUTHORS
+include LICENSE
+include DESCRIPTION
+include CHANGELOG.txt
+include README.md
+graft generic_positions
+prune generic_positions/tests/coverage
+recursive-exclude generic_positions *.orig *.pyc

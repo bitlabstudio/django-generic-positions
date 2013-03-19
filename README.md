@@ -1,2 +1,0 @@
-django-generic-positions
-========================

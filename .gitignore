@@ -1,4 +1,4 @@
-*.log
-*.pot
+*.egg-info/
 *.pyc
-local_settings.py
+*coverage/
+db.sqlite

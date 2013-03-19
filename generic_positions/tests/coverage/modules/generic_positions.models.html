@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-    <title>Test coverage report: generic_positions</title>
+    <title>Test coverage report: generic_positions.models</title>
     <style type="text/css" media="screen">
       a
       {
@@ -119,37 +119,59 @@
   <body>
 
 <div class="nav">
+  <a href="generic_positions.__init__.html">generic_positions.__init__</a> &lt;&lt;
   <a href="../index.html">index</a>
-  &gt;&gt; <a href="generic_positions.models.html">generic_positions.models</a>
+  &gt;&gt; <a href="generic_positions.tests.test_app.models.html">generic_positions.tests.test_app.models</a>
 </div>
 
 <div id="content-header">
   <h1>
-    <span id="module-name">generic_positions</span>:
-    1 total statements,
+    <span id="module-name">generic_positions.models</span>:
+    9 total statements,
     <span class="normal">100.0% covered</span>
   </h1>
   <p>Generated: Tue 2013-03-19 08:24 CET</p>
-  <p>Source file: /home/tobi/Projects/django-generic-positions/src/generic_positions/__init__.py</p>
+  <p>Source file: /home/tobi/Projects/django-generic-positions/src/generic_positions/models.py</p>
   <p>
     Stats:
-    <span class="executed">1 executed</span>,
+    <span class="executed">5 executed</span>,
     <span class="missed">0 missed</span>,
-    <span class="excluded">0 excluded</span>,
-    <span class="ignored">1 ignored</span> 
+    <span class="excluded">4 excluded</span>,
+    <span class="ignored">13 ignored</span> 
   </p> 
 </div>
 
 <div id="source-listing">
   <ol>
-    <li class="ignored"><code># -*- coding: utf-8 -*-</code></li>
-<li class="executed"><code>__version__ = '0.1'</code></li>
+    <li class="ignored"><code>"""Models for the ``generic_positions`` app."""</code></li>
+<li class="excluded"><code>from django.contrib.contenttypes.models import ContentType</code></li>
+<li class="excluded"><code>from django.contrib.contenttypes import generic</code></li>
+<li class="excluded"><code>from django.db import models</code></li>
+<li class="excluded"><code>from django.utils.translation import ugettext_lazy as _</code></li>
+<li class="ignored"><code></code></li>
+<li class="ignored"><code></code></li>
+<li class="executed"><code>class ObjectPosition(models.Model):</code></li>
+<li class="ignored"><code>    """</code></li>
+<li class="ignored"><code>    Model to add a position field to any kind of object.</code></li>
+<li class="ignored"><code></code></li>
+<li class="ignored"><code>    :content_object: Object, which now has a position field.</code></li>
+<li class="ignored"><code>    :position: Current position integer of the object.</code></li>
+<li class="ignored"><code></code></li>
+<li class="ignored"><code>    """</code></li>
+<li class="ignored"><code>    # Generic Foreign Key Bundle</code></li>
+<li class="executed"><code>    content_type = models.ForeignKey(ContentType)</code></li>
+<li class="executed"><code>    object_id = models.PositiveIntegerField()</code></li>
+<li class="executed"><code>    content_object = generic.GenericForeignKey('content_type', 'object_id')</code></li>
+<li class="ignored"><code></code></li>
+<li class="ignored"><code>    # Other fields</code></li>
+<li class="executed"><code>    position = models.PositiveIntegerField(verbose_name=_('Position'))</code></li>
   </ol>
 </div>
 
 <div class="nav">
+  <a href="generic_positions.__init__.html">generic_positions.__init__</a> &lt;&lt;
   <a href="../index.html">index</a>
-  &gt;&gt; <a href="generic_positions.models.html">generic_positions.models</a>
+  &gt;&gt; <a href="generic_positions.tests.test_app.models.html">generic_positions.tests.test_app.models</a>
 </div>
 
   </body>

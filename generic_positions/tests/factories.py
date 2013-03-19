@@ -1,6 +1,7 @@
 """Factories of the ``generic_positions`` app."""
 import factory
 
+from ..models import ObjectPosition
 from .test_app.models import DummyModel
 
 
@@ -9,3 +10,11 @@ class DummyModelFactory(factory.Factory):
     FACTORY_FOR = DummyModel
 
     name = 'Foobar'
+
+
+class ObjectPositionFactory(factory.Factory):
+    """Factory for the ``ObjectPosition`` model."""
+    FACTORY_FOR = ObjectPosition
+
+    position = 5
+    content_object = factory.SubFactory(DummyModelFactory)

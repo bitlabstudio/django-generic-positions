@@ -48,7 +48,20 @@ Run the south migrations to create the app's database tables::
 Usage
 -----
 
-Will be updated soon.
+Let the desired models inherit from ``GenericPositionsModel``::
+
+    from generic_positions.models import GenericPositionsModel
+
+    class YOUR_MODEL(GenericPositionsModel):
+        class Meta:
+            ordering = ['generic_position__position']
+
+Don't forget to add the ordering, right?
+
+If you want to use the drag & drop positioning in the Django admin use::
+
+    from generic_positions.admin import GenericPositionsAdmin
+    admin.site.register(YOUR_MODEL, GenericPositionsAdmin)
 
 
 Roadmap

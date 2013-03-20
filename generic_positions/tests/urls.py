@@ -6,6 +6,9 @@ you can actually reach the app's views (provided it has any views, of course).
 """
 from django.conf.urls.defaults import include, patterns, url
 from django.contrib import admin
+from django.views.generic import ListView
+
+from .test_app.models import DummyModel
 
 
 admin.autodiscover()
@@ -13,5 +16,6 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin', include(admin.site.urls)),
+    url(r'$', ListView.as_view(model=DummyModel)),
 )

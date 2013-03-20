@@ -1,9 +1,8 @@
 """Admin classes for the ``generic_positions`` app."""
 from django.contrib import admin
 from django.contrib.admin.options import csrf_protect_m
-from django.http import HttpResponse
 
-from .models import ObjectPosition
+from .models import save_positions
 
 
 class GenericPositionsAdmin(admin.ModelAdmin):
@@ -23,13 +22,5 @@ class GenericPositionsAdmin(admin.ModelAdmin):
         resp = super(GenericPositionsAdmin, self).changelist_view(
             request, **kwargs)
         if request.method == "POST" and request.is_ajax():
-            for key in request.POST:
-                if key.startswith('position-'):
-                    try:
-                        obj_id = key.replace('position-', '')
-                    except ValueError:
-                        return HttpResponse('failure')
-                    ObjectPosition.objects.filter(pk=obj_id).update(
-                        position=request.POST[key])
-            return HttpResponse('success')
+            save_positions(request.POST)
         return resp

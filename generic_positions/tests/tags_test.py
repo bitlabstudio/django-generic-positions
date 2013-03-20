@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 
 from ..admin import GenericPositionsAdmin
+from ..templatetags.position_tags import order_by_position
 from .factories import DummyModelFactory
 from .test_app.models import DummyModel
 
@@ -32,3 +33,35 @@ class PositionResultListTestCase(TestCase):
         c = Context({'cl': change_list})
         self.assertIn('name="position-{0}"'.format(self.first_model.id),
                       t.render(c))
+
+
+class PositionInputTestCase(TestCase):
+    """Tests for the ``position_input`` tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.first_model = DummyModelFactory()
+
+    def test_render_tag(self):
+        t = Template('{% load position_tags %}{% position_input obj %}')
+        c = Context({'obj': self.first_model})
+        self.assertIn('name="position-{0}"'.format(self.first_model.id),
+                      t.render(c))
+
+
+class OrderByPositionTestCase(TestCase):
+    """Tests for the ``order_by_position`` filter."""
+    longMessage = True
+
+    def setUp(self):
+        self.first_model = DummyModelFactory()
+        DummyModelFactory()
+        self.last_model = DummyModelFactory()
+
+    def test_tag(self):
+        qs = DummyModel.objects.all()
+        self.assertEqual(qs[0].name, self.first_model.name)
+        qs = order_by_position(qs)
+        self.assertEqual(qs[0].name, self.first_model.name)
+        qs = order_by_position(qs, reverse='reverse')
+        self.assertEqual(qs[0].name, self.last_model.name)

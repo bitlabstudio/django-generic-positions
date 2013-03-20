@@ -9,10 +9,29 @@ from ..models import ObjectPosition
 register = Library()
 
 
-@register.inclusion_tag("admin/change_list_results.html")
+@register.filter()
+def order_by_position(qs, reverse=False):
+    """Template filter to return a position-ordered queryset."""
+    if reverse:
+        return qs.order_by('-generic_position__position')
+    return qs.order_by('generic_position__position')
+
+
+@register.inclusion_tag('generic_positions/position.html')
+def position_input(obj, visible=False):
+    """Template tag to return an input field for the position of the object."""
+    if not obj.generic_position.all():
+        ObjectPosition.objects.create(content_object=obj)
+    return {'obj': obj, 'visible': visible,
+            'object_position': obj.generic_position.all()[0]}
+
+
+@register.inclusion_tag('admin/change_list_results.html')
 def position_result_list(cl):
     """
-    Displays the headers and data list together
+    Returns a template which iters through the models and appends a new
+    position column.
+
     """
     result = result_list(cl)
     # Remove sortable attributes
@@ -45,7 +64,7 @@ def position_result_list(cl):
             object_position = ObjectPosition.objects.create(content_object=obj)
         # Add the <td>
         html = ('<td><input class="vTextField" id="id_position-{0}"'
-                ' maxlength="256" name="position-{0}" type="position"'
+                ' maxlength="10" name="position-{0}" type="text"'
                 ' value="{1}" /></td>').format(object_position.id,
                                                object_position.position)
         result['results'][x].append(mark_safe(html))

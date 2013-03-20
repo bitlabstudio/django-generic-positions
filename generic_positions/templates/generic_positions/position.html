@@ -1,0 +1,4 @@
+<input class="positionInput" type="hidden" id="id_position-{{ object_position.id }}" maxlength="10" name="position-{{ object_position.id }}" value="{{ object_position.position }}" />
+{% if visible %}
+    <span class="positionVisible">{{ object_position.position }}</span>
+{% endif %}

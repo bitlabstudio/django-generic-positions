@@ -48,15 +48,17 @@ Run the south migrations to create the app's database tables::
 Usage
 -----
 
-Let the desired models inherit from ``GenericPositionsModel``::
+If you want to add the position feature to a model, do the following::
 
-    from generic_positions.models import GenericPositionsModel
+    YOUR_MODEL.add_to_class('generic_position', generic.GenericRelation(ObjectPosition))
 
-    class YOUR_MODEL(GenericPositionsModel):
+If you want the queryset to be ordered by position by default, you can add the
+ordering attribute to its Meta class. In the admin and in our views the
+ordering is automatically set to the position field.:
+
+    class YOUR_MODEL(models.Model):
         class Meta:
             ordering = ['generic_position__position']
-
-Don't forget to add the ordering, right?
 
 If you want to use the drag & drop positioning in the Django admin use::
 

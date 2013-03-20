@@ -26,17 +26,3 @@ class ObjectPosition(models.Model):
 
     class Meta:
         ordering = ('position', )
-
-
-class GenericPositionsModel(models.Model):
-    """
-    Custom model to sort the queryset with the new position item.
-
-    Therefore we add a position relation on startup.
-
-    """
-    class Meta:
-        abstract = True
-
-GenericPositionsModel.add_to_class(
-    'generic_position', generic.GenericRelation(ObjectPosition))

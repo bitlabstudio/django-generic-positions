@@ -5,8 +5,8 @@
 {% block main %}
 <form id="positionContainer" action="{% url "position_bulk_update" %}" method="post">
     {% csrf_token %}
-    {% for obj in object_list|order_by_position:'reverse' %}
-        <p style="cursor: move; background-color: #{% cycle 'eee' 'fff' %};">{{ obj }} &raquo; {% position_input obj 'visible' %}</p>
+    {% for obj in object_list|order_by_position %}
+        <p style="background-color: #{% cycle 'eee' 'fff' %};">{{ obj }} &raquo; {% position_input obj 'visible' %}</p>
     {% endfor %}
 </form>
 {% endblock %}

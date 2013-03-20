@@ -60,6 +60,53 @@ ordering is automatically set to the position field.:
         class Meta:
             ordering = ['generic_position__position']
 
+
+### Usage in templates
+
+There are several template tags and filters you can use. Let's start with a
+simple view, which orders the object list by position::
+
+    {% load position_tags %}
+    {% for obj in object_list|order_by_position %}
+        <p>{{ obj }}</p>
+    {% endfor %}
+
+You want to reverse the ordering? Go for it::
+
+    {% load position_tags %}
+    {% for obj in object_list|order_by_position:'reverse' %}
+        <p>{{ obj }}</p>
+    {% endfor %}
+
+Let's show the current position, too::
+
+    {% load position_tags %}
+    {% for obj in object_list|order_by_position:'reverse' %}
+        <p>{% position_input obj 'visible' %} &raquo; {{ obj }}</p>
+    {% endfor %}
+
+The ``position_input`` tag will add a hidden field with the position nr. and
+if you add ``visible`` it will also append a span element.
+
+If you also want the drag & drop functionality, have a look at the following
+example of a complete implementation::
+
+    {% load position_tags %}
+    {% load url from future %}
+    <form id="positionContainer" action="{% url "position_bulk_update" %}">
+        {% csrf_token %}
+        {% for obj in object_list|order_by_position %}
+            <p>{{ obj }}{% position_input obj %}</p>
+        {% endfor %}
+    </form>
+    <script type="text/javascript" src="{{ STATIC_URL }}generic_positions/js/reorder.js"></script>
+
+The css id ``positionContainer`` is used by the jQuery script, so don't forget
+it. The update view is csrf-protected, so don't forget the token either.
+
+
+### Usage with Django Admin
+
 If you want to use the drag & drop positioning in the Django admin use::
 
     from generic_positions.admin import GenericPositionsAdmin

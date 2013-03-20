@@ -84,6 +84,7 @@ $(document).ready(function() {
             }
         });
     } else {
+        $('#positionContainer>p').css('cursor', 'move');
         $('#positionContainer').sortable({
             axis: 'y',
             items: 'p',

@@ -78,7 +78,9 @@ $(document).ready(function() {
             $(this).find('tr:odd').addClass('row2');
 
             // Submit form and save positions
-            $('#changelist-form').submit();
+            $.post('.', $('#changelist-form').serializeArray(), function(data) {
+                alert(data);
+            });
         }
     });
 });

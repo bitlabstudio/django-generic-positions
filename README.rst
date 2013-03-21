@@ -102,7 +102,7 @@ example of a complete implementation::
     <script type="text/javascript" src="{{ STATIC_URL }}generic_positions/js/reorder.js"></script>
 
 The css id ``positionContainer`` is used by the jQuery script, so don't forget
-it. The update view is csrf-protected, so don't forget the token either.
+it. The update view is csrf-protected, so don't forget the token as well.
 
 
 ### Usage with Django Admin

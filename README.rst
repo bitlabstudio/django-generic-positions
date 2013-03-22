@@ -1,17 +1,16 @@
 Django Generic Positions
 ========================
 
-Generic app for using a drag & drop position field, wherever you want to.
+This is a generic app for using a drag & drop position field, wherever you want
+to.
 
-We have a million places where we add position fields to models, but then we
-rarely ever use them, because they are a pain in the ass to manage.
+You often have items that should have a position field so that the user
+can manipulate their ordering by entering intergers into that field. This app
+allows you to easily add drag and drop functionality to that model's Django
+admin or even to your frontend.
 
-Scenario:
-If you want something to become the new first item, you'll have to change the
-numbers for all items or at least create a post_save function to do this
-automatically.
-
-How about dragging it? That's what you want, right?
+You don't need to manipulate your models, which means that you can even make
+third party models that don't have a position field at all position aware.
 
 Prerequisites
 -------------
@@ -40,23 +39,46 @@ Add the app to your ``INSTALLED_APPS``::
         'generic_positions',
     ]
 
+Add this to your main ``urls.py``::
+
+    urlpatterns = patterns(
+        '',
+        url(r'^pos/', include('generic_positions.urls')),
+        ...
+    )
+
 Run the south migrations to create the app's database tables::
 
     $ ./manage.py migrate generic_positions
 
-
 Usage
 -----
 
-If you want to add the position feature to a model, do the following::
+If you want to add the position feature to the model of a third party app, 
+do the following in one of your ``models.py`` files::
 
-    YOUR_MODEL.add_to_class('generic_position', generic.GenericRelation(ObjectPosition))
+    from django.contrib.contenttypes import generic
+    from thirdpartyapp.models import TheModel
+
+    TheModel.add_to_class(
+        'generic_position', 
+        generic.GenericRelation('generic_positions.ObjectPosition'),
+    )
+
+If you are extending on of your own models, simply add this to your model::
+
+    from django.contrib.contenttypes import generic
+
+    class YourModel(models.Model):
+        ...
+        generic_position = generic.GenericRelation(
+            'generic_positions.ObjectPosition'
+        ) 
 
 If you want the queryset to be ordered by position by default, you can add the
-ordering attribute to its Meta class. In the admin and in our views the
-ordering is automatically set to the position field.:
+ordering attribute to its Meta class::
 
-    class YOUR_MODEL(models.Model):
+    class YourModel(models.Model):
         class Meta:
             ordering = ['generic_position__position']
 
@@ -93,17 +115,33 @@ example of a complete implementation::
 
     {% load position_tags %}
     {% load url from future %}
-    <form id="positionContainer" action="{% url "position_bulk_update" %}">
+    <form method="post" action="{% url "position_bulk_update" %}">
         {% csrf_token %}
-        {% for obj in object_list|order_by_position %}
-            <p>{{ obj }}{% position_input obj %}</p>
-        {% endfor %}
+        <ul id="positionContainer">
+            {% for obj in object_list|order_by_position %}
+                <li>{{ obj }}{% position_input obj %}</li>
+            {% endfor %}
+        </ul>
     </form>
+
+    # You might want to place these scripts in your base template
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery.min.js"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-ui.min.js"><\/script>')</script>
     <script type="text/javascript" src="{{ STATIC_URL }}generic_positions/js/reorder.js"></script>
 
-The css id ``positionContainer`` is used by the jQuery script, so don't forget
-it. The update view is csrf-protected, so don't forget the token as well.
+A few things are important here:
 
+* You must put a form around your position aware objects
+* The form must POST to the url ``position_bulk_update``
+* Don't forget to add the ``csrf_token``
+* Inside the form you need a wrapper element that wraps all your position aware
+  items. A ``<ul id="positionContainer">`` tag is usually recommended.
+* Make sure that your ``<ul>`` tag has the ID ``positionContainer``.
+* Next to each of your position aware items you need to render a hidden field
+  with it's current position that can be posted to the form, use 
+  ``{% position_input obj %}`` for this.
 
 ### Usage with Django Admin
 

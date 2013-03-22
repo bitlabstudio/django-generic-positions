@@ -84,21 +84,22 @@ $(document).ready(function() {
             }
         });
     } else {
-        $('#positionContainer>p').css('cursor', 'move');
+        $('#positionContainer').children().css('cursor', 'move');
         $('#positionContainer').sortable({
-            axis: 'y',
-            items: 'p',
-            cursor: 'move',
             update: function(event, ui) {
-                items = $(this).find('p').get();
-                $(items).each(function(index) {
+                items = $(this).children().each(function(index) {
                     $(this).find('.positionInput').attr('value', index);
                     $(this).find('.positionVisible').text(index);
                 });
 
                 // Submit form and save positions
-                $.post($(this).attr('action'), $(this).serializeArray());
+                $form = $(this).closest('form');
+                $.post(
+                    $form.attr('action')
+                    ,$form.serializeArray()
+                );
             }
         });
+
     }
 });

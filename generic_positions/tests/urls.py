@@ -16,7 +16,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^admin', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^position/', include('generic_positions.urls')),
     url(r'$', ListView.as_view(model=DummyModel)),
 )

@@ -54,14 +54,14 @@ Run the south migrations to create the app's database tables::
 Usage
 -----
 
-If you want to add the position feature to the model of a third party app, 
+If you want to add the position feature to the model of a third party app,
 do the following in one of your ``models.py`` files::
 
     from django.contrib.contenttypes import generic
     from thirdpartyapp.models import TheModel
 
     TheModel.add_to_class(
-        'generic_position', 
+        'generic_position',
         generic.GenericRelation('generic_positions.ObjectPosition'),
     )
 
@@ -73,7 +73,7 @@ If you are extending on of your own models, simply add this to your model::
         ...
         generic_position = generic.GenericRelation(
             'generic_positions.ObjectPosition'
-        ) 
+        )
 
 If you want the queryset to be ordered by position by default, you can add the
 ordering attribute to its Meta class::
@@ -138,10 +138,10 @@ A few things are important here:
 * Don't forget to add the ``csrf_token``
 * Inside the form you need a wrapper element that wraps all your position aware
   items. A ``<ul id="positionContainer">`` tag is usually recommended.
-* Make sure that your ``<ul>`` tag has the ID ``positionContainer``.
-* Next to each of your position aware items you need to render a hidden field
-  with it's current position that can be posted to the form, use 
-  ``{% position_input obj %}`` for this.
+* Make sure that your wrapper element has the ID ``positionContainer``.
+* Next to each of your position items you need to render a hidden field with
+  its current position, that can be posted to the form. Use the template tag
+  ``{% position_input obj %}`` to automatically add the right input field.
 
 ### Usage with Django Admin
 

@@ -12,12 +12,6 @@ class PositionBulkUpdateView(View):
     """View to update position objects with a POST dictionary."""
     http_method_names = [u'post', ]
 
-    @method_decorator(csrf_exempt)
-    @method_decorator(requires_csrf_token)
-    def dispatch(self, request, *args, **kwargs):
-        return super(PositionBulkUpdateView, self).dispatch(
-            request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             save_positions(request.POST)

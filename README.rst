@@ -26,7 +26,7 @@ Installation
 
 To get the latest stable release from PyPi::
 
-    $ pip install django-generic-positions (not available at the moment)
+    $ pip install django-generic-positions
 
 To get the latest commit from GitHub::
 

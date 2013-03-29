@@ -55,8 +55,8 @@ def position_result_list(cl):
     # Append the editable field to every result item
     for x in range(0, len(result['results'])):
         obj = cl.result_list[x]
+        # Get position object
         c_type = ContentType.objects.get_for_model(obj)
-        # Get or create position object
         try:
             object_position = ObjectPosition.objects.get(
                 content_type__pk=c_type.id, object_id=obj.id)

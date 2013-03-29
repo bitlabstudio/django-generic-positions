@@ -1,8 +1,5 @@
 """Views for the ``generic_positions`` app."""
 from django.http import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import View
 
 from .models import save_positions

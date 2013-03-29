@@ -1,8 +1,9 @@
 """Admin classes for the ``generic_positions`` app."""
 from django.contrib import admin
 from django.contrib.admin.options import csrf_protect_m
+from django.contrib.contenttypes.models import ContentType
 
-from .models import save_positions
+from .models import ObjectPosition, save_positions
 
 
 class GenericPositionsAdmin(admin.ModelAdmin):
@@ -24,3 +25,14 @@ class GenericPositionsAdmin(admin.ModelAdmin):
         if request.method == "POST" and request.is_ajax():
             save_positions(request.POST)
         return resp
+
+    def save_model(self, request, obj, form, change):
+        """Add an ObjectPosition to the object."""
+        super(GenericPositionsAdmin, self).save_model(request, obj, form,
+                                                      change)
+        c_type = ContentType.objects.get_for_model(obj)
+        try:
+            ObjectPosition.objects.get(content_type__pk=c_type.id,
+                                       object_id=obj.id)
+        except ObjectPosition.DoesNotExist:
+            ObjectPosition.objects.create(content_object=obj)

@@ -80,7 +80,7 @@ $(document).ready(function() {
                 $(this).find('tr:odd').addClass('row2');
 
                 // Submit form and save positions
-                $.post('.', $('#changelist-form').serializeArray());
+                $.post($('#position_update_url').val(), $('#changelist-form').serializeArray());
             }
         });
     } else {

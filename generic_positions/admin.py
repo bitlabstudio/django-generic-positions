@@ -1,9 +1,8 @@
 """Admin classes for the ``generic_positions`` app."""
 from django.contrib import admin
-from django.contrib.admin.options import csrf_protect_m
 from django.contrib.contenttypes.models import ContentType
 
-from .models import ObjectPosition, save_positions
+from .models import ObjectPosition
 
 
 class GenericPositionsAdmin(admin.ModelAdmin):
@@ -17,14 +16,6 @@ class GenericPositionsAdmin(admin.ModelAdmin):
             '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
             'generic_positions/js/reorder.js',
         )
-
-    @csrf_protect_m
-    def changelist_view(self, request, **kwargs):
-        resp = super(GenericPositionsAdmin, self).changelist_view(
-            request, **kwargs)
-        if request.method == "POST" and request.is_ajax():
-            save_positions(request.POST)
-        return resp
 
     def save_model(self, request, obj, form, change):
         """Add an ObjectPosition to the object."""

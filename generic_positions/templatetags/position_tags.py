@@ -27,13 +27,15 @@ def position_input(obj, visible=False):
 
 
 @register.inclusion_tag('admin/change_list_results.html')
-def position_result_list(cl):
+def position_result_list(change_list):
     """
     Returns a template which iters through the models and appends a new
     position column.
 
     """
-    result = result_list(cl)
+    # Remove duplicates from change_list results
+    change_list.result_list = list(set(change_list.result_list))
+    result = result_list(change_list)
     # Remove sortable attributes
     for x in range(0, len(result['result_headers'])):
         result['result_headers'][x]['sorted'] = False
@@ -54,7 +56,7 @@ def position_result_list(cl):
     })
     # Append the editable field to every result item
     for x in range(0, len(result['results'])):
-        obj = cl.result_list[x]
+        obj = change_list.result_list[x]
         # Get position object
         c_type = ContentType.objects.get_for_model(obj)
         try:

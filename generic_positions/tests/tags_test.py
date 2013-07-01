@@ -7,7 +7,7 @@ from django.test.client import RequestFactory
 
 from ..admin import GenericPositionsAdmin
 from ..templatetags.position_tags import order_by_position
-from .factories import DummyModelFactory
+from .factories import DummyModelFactory, ObjectPositionFactory
 from .test_app.models import DummyModel
 
 
@@ -54,14 +54,17 @@ class OrderByPositionTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.first_model = DummyModelFactory()
+        self.first_model = ObjectPositionFactory(position=1).content_object
         DummyModelFactory()
-        self.last_model = DummyModelFactory()
+        self.last_model = ObjectPositionFactory(position=2).content_object
 
     def test_tag(self):
         qs = DummyModel.objects.all()
+        self.assertEqual(qs.count(), 3)
         self.assertEqual(qs[0].name, self.first_model.name)
         qs = order_by_position(qs)
+        self.assertEqual(qs.count(), 3)
         self.assertEqual(qs[0].name, self.first_model.name)
         qs = order_by_position(qs, reverse='reverse')
+        self.assertEqual(qs.count(), 3)
         self.assertEqual(qs[0].name, self.last_model.name)

@@ -2,7 +2,14 @@
 import factory
 
 from ..models import ObjectPosition
-from .test_app.models import DummyModel
+from .test_app.models import DummyModel, DummyParentModel
+
+
+class DummyParentModelFactory(factory.Factory):
+    """Factory for the ``DummyParentModel`` model."""
+    FACTORY_FOR = DummyParentModel
+
+    name = 'Foobar'
 
 
 class DummyModelFactory(factory.Factory):
@@ -10,6 +17,7 @@ class DummyModelFactory(factory.Factory):
     FACTORY_FOR = DummyModel
 
     name = 'Foobar'
+    parent = factory.SubFactory(DummyParentModelFactory)
 
 
 class ObjectPositionFactory(factory.Factory):

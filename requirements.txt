@@ -10,7 +10,7 @@ South
 # ==============================================================
 # Packages needed for running the tests. Needed by contributors.
 # ==============================================================
-factory_boy
+factory_boy<2.0.0
 flake8
 nose
 django-nose

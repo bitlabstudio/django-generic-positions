@@ -1,5 +1,9 @@
 === ongoing ===
 
+-
+
+=== 0.1.2 ===
+
 - Removing ordering from admin and added a ordering workaround to the tags
 
 === 0.1.1 ===

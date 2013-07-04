@@ -12,9 +12,20 @@ register = Library()
 @register.filter()
 def order_by_position(qs, reverse=False):
     """Template filter to return a position-ordered queryset."""
-    if reverse:
-        return qs.order_by('-generic_position__position')
-    return qs.order_by('generic_position__position')
+    if qs:
+        # ATTENTION: Django creates an invalid sql statement if two related
+        # models have both generic positions, so we cannot use
+        # qs.oder_by('generic_position__position')
+        position = 'position'
+        if reverse:
+            position = '-' + position
+        # Get content type of first queryset item
+        c_type = ContentType.objects.get_for_model(qs[0])
+        return [
+            o.content_object for o in ObjectPosition.objects.filter(
+                content_type=c_type, object_id__in=qs).order_by(position)
+        ]
+    return qs
 
 
 @register.inclusion_tag('generic_positions/position.html')
@@ -33,8 +44,6 @@ def position_result_list(change_list):
     position column.
 
     """
-    # Remove duplicates from change_list results
-    change_list.result_list = list(set(change_list.result_list))
     result = result_list(change_list)
     # Remove sortable attributes
     for x in range(0, len(result['result_headers'])):

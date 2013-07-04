@@ -5,5 +5,9 @@ from ...admin import GenericPositionsAdmin
 from .models import DummyModel, DummyParentModel
 
 
-admin.site.register(DummyModel, GenericPositionsAdmin)
+class DummyModelAdmin(GenericPositionsAdmin):
+    list_filter = ('name', )
+
+
+admin.site.register(DummyModel, DummyModelAdmin)
 admin.site.register(DummyParentModel, GenericPositionsAdmin)

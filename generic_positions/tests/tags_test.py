@@ -63,8 +63,10 @@ class OrderByPositionTestCase(TestCase):
         self.assertEqual(qs.count(), 3)
         self.assertEqual(qs[0].name, self.first_model.name)
         qs = order_by_position(qs)
-        self.assertEqual(qs.count(), 3)
+        self.assertEqual(qs, [self.first_model, self.last_model])
         self.assertEqual(qs[0].name, self.first_model.name)
-        qs = order_by_position(qs, reverse='reverse')
-        self.assertEqual(qs.count(), 3)
+        qs = order_by_position(DummyModel.objects.all(), reverse='reverse')
+        self.assertEqual(qs, [self.last_model, self.first_model])
         self.assertEqual(qs[0].name, self.last_model.name)
+
+        self.assertFalse(order_by_position(None))

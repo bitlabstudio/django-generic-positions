@@ -24,9 +24,6 @@ class ObjectPosition(models.Model):
         null=True, blank=True,
     )
 
-    class Meta:
-        ordering = ('position', )
-
 
 def save_positions(post_data, queryset=None):
     """

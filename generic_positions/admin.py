@@ -8,7 +8,6 @@ from .models import ObjectPosition
 class GenericPositionsAdmin(admin.ModelAdmin):
     """Admin to let models be dragged & dropped with jQuery UI sortable."""
     change_list_template = 'generic_positions/admin/change_list.html'
-    ordering = ('generic_position__position', )
 
     class Media:
         js = (

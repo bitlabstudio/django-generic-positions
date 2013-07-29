@@ -23,9 +23,10 @@ $(document).ready(function() {
         }
 
         // Some visual enhancements
-        header = $('#result_list thead tr').children()[pos_col];
+        var header = $('#result_list thead tr').children()[pos_col];
         $(header).css('width', '1em');
         $(header).children('a').text('#');
+        $(header).find('.sortremove').remove();
 
         // Hide position field
         $('#result_list tbody tr').each(function(index) {
@@ -83,6 +84,42 @@ $(document).ready(function() {
                 $.post($('#position_update_url').val(), $('#changelist-form').serializeArray());
             }
         });
+
+        // Order rows by position
+        $(header).click(function(){
+            if ($(header).hasClass('ascending')) {
+                $(header).removeClass('ascending').addClass('descending');
+                $(header).find('a').removeClass('ascending').addClass('descending');
+                var inverse = false;
+            } else if ($(header).hasClass('descending')) {
+                $(header).removeClass('descending').addClass('ascending');
+                $(header).find('a').removeClass('descending').addClass('ascending');
+                var inverse = true;
+            }
+
+            var th = $(this),
+                thIndex = th.index(),
+                table = $('#result_list');
+            table.find('td').filter(function(){
+                return $(this).index() === thIndex;
+            }).sortElements(function(a, b){
+                if( $.text([a]) == $.text([b]) )
+                    return 0;
+                return $.text([a]) > $.text([b]) ?
+                    inverse ? -1 : 1
+                    : inverse ? 1 : -1;
+            }, function(){
+                // parentNode is the element we want to move
+                return this.parentNode;
+            });
+            inverse = !inverse;
+
+            // Update row classes
+            $('#result_list tbody').find('tr').removeClass('row1').removeClass('row2');
+            $('#result_list tbody').find('tr:even').addClass('row1');
+            $('#result_list tbody').find('tr:odd').addClass('row2');
+            return false;
+        }).click(); // Initial sorting.
     } else {
         $('#positionContainer').children().css('cursor', 'move');
         $('#positionContainer').sortable({
@@ -103,3 +140,37 @@ $(document).ready(function() {
 
     }
 });
+
+
+// Sorting function
+jQuery.fn.sortElements = (function(){
+    var sort = [].sort;
+    return function(comparator, getSortable) {
+        getSortable = getSortable || function(){return this;};
+        var placements = this.map(function(){
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+                // Since the element itself will change position, we have
+                // to have some way of storing it's original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+            return function() {
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+            };
+        });
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+    };
+})();

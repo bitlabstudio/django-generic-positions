@@ -2,6 +2,10 @@
 
 -
 
+=== 0.1.3 ===
+
+- Added jquery sorting for admin
+
 === 0.1.2 ===
 
 - Removing ordering from admin and added a ordering workaround to the tags

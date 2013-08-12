@@ -103,9 +103,9 @@ $(document).ready(function() {
             table.find('td').filter(function(){
                 return $(this).index() === thIndex;
             }).sortElements(function(a, b){
-                if( $.text([a]) == $.text([b]) )
+                if( parseInt($.text([a])) == parseInt($.text([b])) )
                     return 0;
-                return $.text([a]) > $.text([b]) ?
+                return parseInt($.text([a])) > parseInt($.text([b])) ?
                     inverse ? -1 : 1
                     : inverse ? 1 : -1;
             }, function(){

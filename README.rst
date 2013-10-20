@@ -75,15 +75,14 @@ If you are extending on of your own models, simply add this to your model::
             'generic_positions.ObjectPosition'
         )
 
-If you want the queryset to be ordered by position by default, you can add the
-ordering attribute to its Meta class::
-
-    class YourModel(models.Model):
-        class Meta:
-            ordering = ['generic_position__position']
+IMPORTANT. If you are using multiple models, which have generic relations to
+the positioning model, this is what you should NOT do: For some reason there
+will be duplicates of your model appearing in the templates. Please don't use
+``ordering = ['generic_position__position']``.
 
 
-### Usage in templates
+Usage in templates
+++++++++++++++++++
 
 There are several template tags and filters you can use. Let's start with a
 simple view, which orders the object list by position::
@@ -143,7 +142,8 @@ A few things are important here:
   its current position, that can be posted to the form. Use the template tag
   ``{% position_input obj %}`` to automatically add the right input field.
 
-### Usage with Django Admin
+Usage with Django Admin
++++++++++++++++++++++++
 
 If you want to use the drag & drop positioning in the Django admin use::
 

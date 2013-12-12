@@ -1,5 +1,9 @@
 === ongoing ===
 
+=== 0.1.6 ===
+
+- Fixed order by position tag to use get_or_create
+
 === 0.1.5 ===
 
 - Fixed order by position tag if items have no position object

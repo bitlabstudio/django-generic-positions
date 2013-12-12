@@ -19,6 +19,9 @@ def order_by_position(qs, reverse=False):
         position = 'position'
         if reverse:
             position = '-' + position
+        # Check that every item has a valid position item
+        for obj in qs:
+            ObjectPosition.objects.get_or_create(content_object=obj)
         # Get content type of first queryset item
         c_type = ContentType.objects.get_for_model(qs[0])
         return [

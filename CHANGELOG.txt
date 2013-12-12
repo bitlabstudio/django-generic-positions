@@ -1,6 +1,8 @@
 === ongoing ===
 
--
+=== 0.1.5 ===
+
+- Fixed order by position tag if items have no position object
 
 === 0.1.4 ===
 

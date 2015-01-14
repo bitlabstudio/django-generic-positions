@@ -1,5 +1,9 @@
 === ongoing ===
 
+=== 0.1.7 ===
+
+- Auto-assign next position after model has been created
+
 === 0.1.6 ===
 
 - Fixed order by position tag to use get_or_create

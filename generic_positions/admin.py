@@ -25,4 +25,12 @@ class GenericPositionsAdmin(admin.ModelAdmin):
             ObjectPosition.objects.get(content_type__pk=c_type.id,
                                        object_id=obj.id)
         except ObjectPosition.DoesNotExist:
-            ObjectPosition.objects.create(content_object=obj)
+            position_objects = ObjectPosition.objects.filter(
+                content_type__pk=c_type.id, position__isnull=False).order_by(
+                    '-position')
+            try:
+                position = (position_objects[0].position + 1)
+            except IndexError:
+                position = 1
+            ObjectPosition.objects.create(
+                content_object=obj, position=position)

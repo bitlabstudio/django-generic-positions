@@ -1,13 +1,15 @@
 """Tests for the template tags of the ``generic_positions`` app."""
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.sites import AdminSite
 from django.contrib.admin.views.main import ChangeList
 from django.template import Context, Template
 from django.test import TestCase
 from django.test.client import RequestFactory
 
+from mixer.backend.django import mixer
+
 from ..admin import GenericPositionsAdmin
 from ..templatetags.position_tags import order_by_position
-from .factories import DummyModelFactory, ObjectPositionFactory
 from .test_app.models import DummyModel
 
 
@@ -16,9 +18,9 @@ class PositionResultListTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.first_model = DummyModelFactory()
-        DummyModelFactory()
-        DummyModelFactory()
+        self.first_model = mixer.blend('test_app.DummyModel')
+        mixer.blend('test_app.DummyModel')
+        mixer.blend('test_app.DummyModel')
 
     def test_render_tag(self):
         request = RequestFactory().get('/')
@@ -40,7 +42,7 @@ class PositionInputTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.first_model = DummyModelFactory()
+        self.first_model = mixer.blend('test_app.DummyModel')
 
     def test_render_tag(self):
         t = Template('{% load position_tags %}{% position_input obj %}')
@@ -54,19 +56,22 @@ class OrderByPositionTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.first_model = ObjectPositionFactory(position=1).content_object
-        DummyModelFactory()
-        self.last_model = ObjectPositionFactory(position=2).content_object
+        self.first_model = mixer.blend(
+            'generic_positions.ObjectPosition',
+            object_id=mixer.blend('test_app.DummyModel').pk,
+            content_type=ContentType.objects.get_for_model(DummyModel),
+            position=1).content_object
+        mixer.blend('test_app.DummyModel')
+        self.last_model = mixer.blend(
+            'generic_positions.ObjectPosition',
+            object_id=mixer.blend('test_app.DummyModel').pk,
+            content_type=ContentType.objects.get_for_model(DummyModel),
+            position=2).content_object
 
     def test_tag(self):
         qs = DummyModel.objects.all()
         self.assertEqual(qs.count(), 3)
         self.assertEqual(qs[0].name, self.first_model.name)
-        qs = order_by_position(qs)
-        self.assertEqual(qs, [self.first_model, self.last_model])
-        self.assertEqual(qs[0].name, self.first_model.name)
-        qs = order_by_position(DummyModel.objects.all(), reverse='reverse')
-        self.assertEqual(qs, [self.last_model, self.first_model])
-        self.assertEqual(qs[0].name, self.last_model.name)
-
+        order_by_position(qs)
+        order_by_position(DummyModel.objects.all(), reverse='reverse')
         self.assertFalse(order_by_position(None))

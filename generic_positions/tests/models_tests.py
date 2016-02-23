@@ -1,8 +1,11 @@
 """Tests for the models of the ``generic_positions`` app."""
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 
+from mixer.backend.django import mixer
+
 from ..models import ObjectPosition, save_positions
-from .factories import ObjectPositionFactory
+from test_app.models import DummyModel
 
 
 class ObjectPositionTestCase(TestCase):
@@ -16,8 +19,12 @@ class ObjectPositionTestCase(TestCase):
 
     def test_save_positions_function(self):
         """Test the ``save_positions`` function."""
-        object_position = ObjectPositionFactory()
-        object_position2 = ObjectPositionFactory()
+        object_position = mixer.blend(
+            'generic_positions.ObjectPosition',
+            content_type=ContentType.objects.get_for_model(DummyModel))
+        object_position2 = mixer.blend(
+            'generic_positions.ObjectPosition',
+            content_type=ContentType.objects.get_for_model(DummyModel))
         post_data = {
             'position-{0}'.format(object_position.id): '2',
             'position-invalid': '2',

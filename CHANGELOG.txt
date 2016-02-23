@@ -1,5 +1,7 @@
 === ongoing ===
 
+=== 0.2 ===
+
 - prepared app for Django 1.9
 
 === 0.1.7 ===

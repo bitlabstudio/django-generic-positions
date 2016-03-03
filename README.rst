@@ -113,7 +113,6 @@ If you also want the drag & drop functionality, have a look at the following
 example of a complete implementation::
 
     {% load position_tags %}
-    {% load url from future %}
     <form method="post" action="{% url "position_bulk_update" %}">
         {% csrf_token %}
         <ul id="positionContainer">

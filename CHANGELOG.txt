@@ -1,5 +1,9 @@
 === ongoing ===
 
+=== 0.2.X ===
+
+- removed old url tag import
+
 === 0.2 ===
 
 - prepared app for Django 1.9

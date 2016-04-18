@@ -3,6 +3,7 @@
 === 0.2.X ===
 
 - removed old url tag import
+- prepared app for Python 3.5
 
 === 0.2 ===
 

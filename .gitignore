@@ -4,3 +4,4 @@
 db.sqlite
 dist/
 *.tox/
+.coverage

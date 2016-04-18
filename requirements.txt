@@ -1,19 +1,4 @@
-# Install these requirements if you wish to contribute to this project.
-
 # ===========================================================================
 # Packages essential to this app. Needed by anyone who wants to use this app.
 # ===========================================================================
 Django
-django-libs
-
-# ==============================================================
-# Packages needed for running the tests. Needed by contributors.
-# ==============================================================
-mixer
-flake8
-fabric
-nose
-django-nose
-coverage
-django-coverage
-ipdb

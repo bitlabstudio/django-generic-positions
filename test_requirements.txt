@@ -1,0 +1,11 @@
+# ==============================================================
+# Packages needed for running the tests. Needed by contributors.
+# ==============================================================
+mixer
+flake8
+fabric3
+coverage
+django-coverage
+ipdb
+django-libs
+tox

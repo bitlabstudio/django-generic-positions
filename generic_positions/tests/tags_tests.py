@@ -29,7 +29,7 @@ class PositionResultListTestCase(TestCase):
             request=request, model=DummyModel, list_display=['name'],
             list_display_links=None, list_filter=None, date_hierarchy=None,
             search_fields=None, list_select_related=None, list_per_page=100,
-            list_max_show_all=None, list_editable=None,
+            list_max_show_all=10, list_editable=None,
             model_admin=GenericPositionsAdmin(DummyModel, AdminSite()))
         change_list.formset = None
         c = Context({'cl': change_list})

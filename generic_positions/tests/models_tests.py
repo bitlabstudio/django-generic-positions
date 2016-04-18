@@ -5,7 +5,7 @@ from django.test import TestCase
 from mixer.backend.django import mixer
 
 from ..models import ObjectPosition, save_positions
-from test_app.models import DummyModel
+from .test_app.models import DummyModel
 
 
 class ObjectPositionTestCase(TestCase):

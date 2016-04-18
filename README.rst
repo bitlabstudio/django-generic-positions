@@ -17,8 +17,7 @@ Prerequisites
 
 You need at least the following packages in your virtualenv:
 
-* Django 1.4
-* South
+* Django
 
 
 Installation
@@ -47,7 +46,7 @@ Add this to your main ``urls.py``::
         ...
     )
 
-Run the south migrations to create the app's database tables::
+Run the migrations to create the app's database tables::
 
     $ ./manage.py migrate generic_positions
 
@@ -57,7 +56,7 @@ Usage
 If you want to add the position feature to the model of a third party app,
 do the following in one of your ``models.py`` files::
 
-    from django.contrib.contenttypes import generic
+    from django.contrib.contenttypes.fields import GenericRelation
     from thirdpartyapp.models import TheModel
 
     TheModel.add_to_class(
@@ -67,11 +66,11 @@ do the following in one of your ``models.py`` files::
 
 If you are extending on of your own models, simply add this to your model::
 
-    from django.contrib.contenttypes import generic
+    from django.contrib.contenttypes.fields import GenericRelation
 
     class YourModel(models.Model):
         ...
-        generic_position = generic.GenericRelation(
+        generic_position = GenericRelation(
             'generic_positions.ObjectPosition'
         )
 

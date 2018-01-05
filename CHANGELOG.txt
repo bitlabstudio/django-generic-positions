@@ -2,6 +2,7 @@
 
 === 0.2.X ===
 
+- small changes for Django>1.9
 - removed old url tag import
 - prepared app for Python 3.5
 
